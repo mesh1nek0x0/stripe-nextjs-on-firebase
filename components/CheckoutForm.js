@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { CardElement, injectStripe } from "react-stripe-elements";
+import withAuth from "../components/helpers/withAuth";
+import { firestore } from "../lib/firebase";
 
 class CheckoutForm extends Component {
   constructor(props) {
@@ -9,8 +11,14 @@ class CheckoutForm extends Component {
 
   async submit(ev) {
     const { token, error } = await this.props.stripe.createToken();
-    this._element.clear();
-    console.log(token);
+    firestore
+      .collection("stripe_customers")
+      .doc(this.props.currentUser.uid)
+      .collection("tokens")
+      .add({ token: token.id })
+      .then(() => {
+        this._element.clear();
+      });
   }
 
   render() {
@@ -24,4 +32,4 @@ class CheckoutForm extends Component {
   }
 }
 
-export default injectStripe(CheckoutForm);
+export default withAuth(injectStripe(CheckoutForm));
