@@ -6,14 +6,16 @@ const withAuth = Component => {
     constructor(props) {
       super(props);
       this.state = {
-        status: "LOADING"
+        status: "LOADING",
+        user: {}
       };
     }
     componentDidMount() {
       auth.onAuthStateChanged(authUser => {
         if (authUser) {
-          this.setState({
-            status: "SIGNED_IN"
+          this.setState( {
+            status: "SIGNED_IN",
+            user: authUser
           });
         } else {
           router.push("/");
@@ -21,11 +23,11 @@ const withAuth = Component => {
       });
     }
     renderContent() {
-      const { status } = this.state;
+      const { status, user } = this.state;
       if (status == "LOADING") {
         return <h1>Loading ......</h1>;
       } else if (status == "SIGNED_IN") {
-        return <Component {...this.props} />;
+        return <Component {...this.props} currentUser={user} />;
       }
     }
     render() {
