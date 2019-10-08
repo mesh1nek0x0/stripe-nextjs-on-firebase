@@ -13,11 +13,10 @@ const withAuth = Component => {
     componentDidMount() {
       auth.onAuthStateChanged(authUser => {
         if (authUser) {
-          const state = Object.assign(this.state, {
+          this.setState( {
             status: "SIGNED_IN",
             user: authUser
           });
-          this.setState(state);
         } else {
           router.push("/");
         }
