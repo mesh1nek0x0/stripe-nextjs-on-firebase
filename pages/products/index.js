@@ -6,6 +6,9 @@ function Products(props) {
   return (
     <>
       <h1>pages/products</h1>
+      <Link href="/">
+        <a>Go back to TOP</a>
+      </Link>
       <ul>
         {props.products.map(product => {
           return (
