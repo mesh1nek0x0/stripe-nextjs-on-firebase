@@ -52,10 +52,12 @@ class CheckoutForm extends Component {
   render() {
     return (
       <>
+        <p>YOUR ACCOUNT: {this.props.currentUser.email}</p>
+        <p>YOUR NAME: {this.props.currentUser.displayName}</p>
         <div className="checkout">
-          <p>Would you like to complete the purchase?</p>
+          <p>Would you like to add a new card?</p>
           <CardElement onReady={c => (this._element = c)} />
-          <button onClick={this.submit}>Purchase</button>
+          <button onClick={this.submit}>ADD</button>
         </div>
         <div>
           <ul>

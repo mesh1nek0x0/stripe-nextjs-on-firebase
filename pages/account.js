@@ -23,7 +23,7 @@ export default class Purchase extends Component {
           <Head>
             <script src="https://js.stripe.com/v3/" />
           </Head>
-          <h1>React Stripe Elements Example</h1>
+          <h1>pages/account.js</h1>
           <Elements>
             <CheckoutForm />
           </Elements>
