@@ -18,8 +18,7 @@ function Payable(props) {
         snapshot => {
           let newSources = [];
           snapshot.forEach(doc => {
-            const id = doc.id;
-            newSources.push({ key: id, last4: doc.data().last4 });
+            newSources.push({ key: doc.data().id, last4: doc.data().last4 });
           });
           setSources(newSources);
           setSource(newSources[0]);
@@ -36,6 +35,14 @@ function Payable(props) {
   const handleCharge = event => {
     event.preventDefault();
     alert(`${source.last4}(${source.key})で${props.amount}円はらいます`);
+    firestore
+      .collection("stripe_customers")
+      .doc(props.currentUid)
+      .collection("charges")
+      .add({
+        source: source.key,
+        amount: parseInt(props.amount)
+      });
   };
 
   const handleChange = event => {
