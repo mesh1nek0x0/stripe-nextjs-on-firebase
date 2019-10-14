@@ -42,7 +42,10 @@ class Product extends React.Component {
           <li>MONTHLY FEE: {this.props.product.monthlyFee}</li>
         </ul>
         {this.state.isLogin ? (
-          <Payable amount={this.props.product.monthlyFee} />
+          <Payable
+            amount={this.props.product.monthlyFee}
+            currentUid={this.state.user.uid}
+          />
         ) : (
           "PLEASE LOGIN"
         )}

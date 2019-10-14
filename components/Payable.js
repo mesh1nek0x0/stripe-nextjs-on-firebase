@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { firestore } from "../lib/firebase";
 
 function Payable(props) {
   // use hooks
@@ -9,15 +10,28 @@ function Payable(props) {
 
   // useEffect like componetDidMount
   useEffect(() => {
-    const result = [
-      { key: "card1", last4: "4242" },
-      { key: "card2", last4: "5252" }
-    ];
-    // 読み込み終わったら、選択肢に反映
-    setSources(result);
-    // 取得できた最初の支払い方法をデフォルトに
-    setSource(result[0]);
-  }, []);
+    firestore
+      .collection("stripe_customers")
+      .doc(props.currentUid)
+      .collection("sources")
+      .onSnapshot(
+        snapshot => {
+          let newSources = [];
+          snapshot.forEach(doc => {
+            const id = doc.id;
+            newSources.push({ key: id, last4: doc.data().last4 });
+          });
+          setSources(newSources);
+          setSource(newSources[0]);
+        },
+        () => {
+          const state = Object.assign(sources, {
+            sources: []
+          });
+          setSources(state);
+        }
+      );
+  }, [props.currentUid]);
 
   const handleCharge = event => {
     event.preventDefault();
