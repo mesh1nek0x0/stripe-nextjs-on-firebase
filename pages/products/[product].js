@@ -1,4 +1,5 @@
 import React from "react";
+import Payable from "../../components/Payable";
 import { auth, firestore } from "../../lib/firebase";
 import Link from "next/link";
 
@@ -40,11 +41,11 @@ class Product extends React.Component {
           <li>PRODUCT NAME: {this.props.product.pageName}</li>
           <li>MONTHLY FEE: {this.props.product.monthlyFee}</li>
         </ul>
-        <button>
-          {this.state.isLogin
-            ? `BUY as ${this.state.user.displayName}`
-            : "PLEASE LOGIN"}
-        </button>
+        {this.state.isLogin ? (
+          <Payable amount={this.props.product.monthlyFee} />
+        ) : (
+          "PLEASE LOGIN"
+        )}
       </>
     );
   }
