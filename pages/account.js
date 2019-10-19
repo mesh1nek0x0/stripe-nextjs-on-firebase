@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import Head from "next/head";
+import Link from "next/link";
 import { Elements, StripeProvider } from "react-stripe-elements";
 import CheckoutForm from "../components/CheckoutForm";
 
@@ -23,7 +24,10 @@ export default class Purchase extends Component {
           <Head>
             <script src="https://js.stripe.com/v3/" />
           </Head>
-          <h1>React Stripe Elements Example</h1>
+          <h1>pages/account.js</h1>
+          <Link href="/">
+            <a>Go back to top</a>
+          </Link>
           <Elements>
             <CheckoutForm />
           </Elements>

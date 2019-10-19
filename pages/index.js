@@ -1,6 +1,7 @@
 import React from "react";
 import Head from "next/head";
 import Nav from "../components/nav";
+import Link from "next/link";
 import { auth, firebase } from "../lib/firebase";
 
 export default class Home extends React.Component {
@@ -44,14 +45,16 @@ export default class Home extends React.Component {
           </p>
 
           <div className="row">
-            <a href="https://nextjs.org/docs" className="card">
-              <h3>Documentation &rarr;</h3>
-              <p>Learn more about Next.js in the documentation.</p>
+            <a href="/account" className="card">
+              <h3>My Page &rarr;</h3>
+              <p>go to account page</p>
             </a>
-            <a href="https://nextjs.org/learn" className="card">
-              <h3>Next.js Learn &rarr;</h3>
-              <p>Learn about Next.js by following an interactive tutorial!</p>
-            </a>
+            <Link href="/products">
+              <a className="card">
+                <h3>Products &rarr;</h3>
+                <p>go to product list</p>
+              </a>
+            </Link>
             <a
               href="https://github.com/zeit/next.js/tree/master/examples"
               className="card"
