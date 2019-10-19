@@ -42,10 +42,19 @@ class Product extends React.Component {
           <li>MONTHLY FEE: {this.props.product.monthlyFee}</li>
         </ul>
         {this.state.isLogin ? (
-          <Payable
-            amount={this.props.product.monthlyFee}
-            currentUid={this.state.user.uid}
-          />
+          <>
+            <Payable
+              amount={this.props.product.monthlyFee}
+              currentUid={this.state.user.uid}
+            />
+            <p>Alredy members? go members pages</p>
+            <Link
+              href="/products/[product]/member-only"
+              as={`/products/${this.props.url.query.product}/member-only`}
+            >
+              <a>GO TO MEMBER ONLY PAGE</a>
+            </Link>
+          </>
         ) : (
           "PLEASE LOGIN"
         )}
