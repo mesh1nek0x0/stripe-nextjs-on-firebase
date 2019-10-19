@@ -1,6 +1,6 @@
 import React from "react";
-import Payable from "../../components/Payable";
-import { auth, firestore } from "../../lib/firebase";
+import Payable from "../../../components/Payable";
+import { auth, firestore } from "../../../lib/firebase";
 import Link from "next/link";
 
 class Product extends React.Component {
