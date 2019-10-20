@@ -44,7 +44,7 @@ class Product extends React.Component {
         {this.state.isLogin ? (
           <>
             <Payable
-              amount={this.props.product.monthlyFee}
+              product={this.props.product}
               currentUid={this.state.user.uid}
             />
             <p>Alredy members? go members pages</p>
