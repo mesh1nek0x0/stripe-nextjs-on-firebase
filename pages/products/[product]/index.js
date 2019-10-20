@@ -68,7 +68,7 @@ class Product extends React.Component {
       .doc(query.product)
       .get()
       .then(snapshot => {
-        return snapshot.data();
+        return { id: snapshot.id, ...snapshot.data() };
       });
     return { product: result };
   }

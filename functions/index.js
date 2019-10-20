@@ -61,17 +61,35 @@ exports.createStripeCharge = functions.firestore
       const customer = snapval.customer_id;
       // Create a charge using the pushId as the idempotency key
       // protecting against double charges
-      const amount = val.amount;
       const idempotencyKey = context.params.id;
-      const charge = { amount, currency, customer };
+      const subscription = {
+        customer: customer,
+        items: [
+          {
+            plan: val.plan
+          }
+        ]
+      };
       if (val.source !== null) {
-        charge.source = val.source;
+        subscription.default_source = val.source;
       }
-      const response = await stripe.charges.create(charge, {
+
+      const response = await stripe.subscriptions.create(subscription, {
         idempotency_key: idempotencyKey
       });
       // If the result is successful, write it back to the database
-      return snap.ref.set(response, { merge: true });
+      await snap.ref.set(response, { merge: true });
+
+      // 購入済みメンバーとして登録
+      await admin
+        .firestore()
+        .collection("fanPages")
+        .doc(val.productId)
+        .collection("members")
+        .doc(context.params.userId)
+        .set({ permission: "readonly" });
+
+      return;
     } catch (error) {
       // We want to capture errors and render them in a user-friendly way, while
       // still logging an exception with StackDriver
