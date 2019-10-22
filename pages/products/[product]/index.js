@@ -1,6 +1,6 @@
 import React from "react";
-import Payable from "../../components/Payable";
-import { auth, firestore } from "../../lib/firebase";
+import Payable from "../../../components/Payable";
+import { auth, firestore } from "../../../lib/firebase";
 import Link from "next/link";
 
 class Product extends React.Component {
@@ -42,10 +42,19 @@ class Product extends React.Component {
           <li>MONTHLY FEE: {this.props.product.monthlyFee}</li>
         </ul>
         {this.state.isLogin ? (
-          <Payable
-            amount={this.props.product.monthlyFee}
-            currentUid={this.state.user.uid}
-          />
+          <>
+            <Payable
+              product={this.props.product}
+              currentUid={this.state.user.uid}
+            />
+            <p>Alredy members? go members pages</p>
+            <Link
+              href="/products/[product]/member-only"
+              as={`/products/${this.props.url.query.product}/member-only`}
+            >
+              <a>GO TO MEMBER ONLY PAGE</a>
+            </Link>
+          </>
         ) : (
           "PLEASE LOGIN"
         )}
@@ -59,7 +68,7 @@ class Product extends React.Component {
       .doc(query.product)
       .get()
       .then(snapshot => {
-        return snapshot.data();
+        return { id: snapshot.id, ...snapshot.data() };
       });
     return { product: result };
   }
