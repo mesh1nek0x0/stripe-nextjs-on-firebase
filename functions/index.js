@@ -13,6 +13,34 @@ exports.createStripeCustomer = functions.auth.user().onCreate(async user => {
     .set({ customer_id: customer.id });
 });
 
+exports.createProductPlan = functions.firestore
+  .document("fanPages/{fanpage}")
+  .onCreate(async (snap, context) => {
+    const val = snap.data();
+
+    const product = await stripe.products.create({
+      name: val.name,
+      type: "service",
+      statement_descriptor: val.description
+    });
+
+    const productId = product.id;
+
+    const plans = {
+      product: productId,
+      currency: "jpy",
+      interval: "month",
+      interval_count: "1",
+      usage_type: "licensed",
+      billing_scheme: "per_unit",
+      nickname: val.planName,
+      amount: val.monthlyFee
+    };
+    const result = await stripe.plans.create(plans);
+
+    await snap.ref.set({ plan: result.id }, { merge: true });
+  });
+
 exports.addPaymentSource = functions.firestore
   .document("/stripe_customers/{userId}/tokens/{pushId}")
   .onCreate(async (snap, context) => {
